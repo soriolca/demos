@@ -75,6 +75,24 @@
         {
           "name": "Marginal bars (row)",
           "width": 75,
+          "transform": [
+            {
+              "aggregate": [
+                {
+                  "op": "sum",
+                  "field": "Margen Bruto_Bonus_Staffing",
+                  "as": "MargenTotal"
+                },
+                {
+                  "op": "max",
+                  "field": "Color Barra Empleado",
+                  "as": "ColorFinal"
+                }
+              ],
+              "groupby": ["Nombre Empleado"]
+            }
+          ],
+
           "mark": {
             "type": "bar",
             "tooltip": true,
@@ -84,20 +102,21 @@
             "y": {
               "field": "Nombre Empleado",
               "sort": {
-                "field":"Margen Bruto_Bonus_Staffing",
+                "field":"MargenTotal",
                 "op":"sum",
                 "order":"descending"
               },
               "axis": null
             },
             "x": {
-              "field": "Margen Bruto_Bonus_Staffing",
+              "field": "MargenTotal",
               "type": "quantitative",
               "aggregate": "sum"
             },
             "color": {
-              "field": "Color Barra Empleado (Total Anual)",
+              "field": "ColorFinal",
               "type": "nominal",
+              "aggregate": "max",
               "scale": null,
               "legend": null
             }
@@ -113,12 +132,15 @@
           "mark": {
             "type": "bar",
             "tooltip": true,
-            "width": {"band": 0.85}
+            "width":{"band": 0.85}
           },
           "encoding": {
             "x": {
               "field": "Año mes",
-              "sort": null,
+              "sort": {
+                "field":"Año mes order",
+                "order":"ascending"
+              },
               "axis": null
             },
             "y": {
@@ -126,8 +148,13 @@
               "type": "quantitative",
               "aggregate": "sum",
               "scale": {
-                "reverse": true
+              "reverse": true
               }
+            },
+            "color": {
+              "field": "Color Barra mes",
+              "type": "nominal",
+              "legend": null
             }
           }
         }
